@@ -1,19 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../src/pages/LoginPage.js';
+import { test, expect } from '../../src/fixtures/test-base.js';
 import { users } from '../../src/fixtures/users.fixture.js';
-
-let loginPage: LoginPage;
-
-test.beforeEach(async ({ page }) => {
-  loginPage = new LoginPage(page);
-  await loginPage.open();
-});
 
 
 // ============================================================
 // Valid login redirects to inventory page
 // ============================================================
-test('valid login redirects to inventory page', async ({ page }) => {
+test('valid login redirects to inventory page', async ({ page, loginPage }) => {
   const inventoryPage = await loginPage.login(users.standardUser.username, users.standardUser.password);
 
   await expect(page).toHaveURL(/inventory\.html/);
@@ -54,7 +46,7 @@ const invalidLoginCases = [
 ];
 
 for (const { description, username, password, expectedError } of invalidLoginCases) {
-  test(`${description} shows error`, async ({ page }) => {
+  test(`${description} shows error`, async ({ page, loginPage }) => {
     await loginPage.loginExpectingFailure(username, password);
 
     await expect(page).toHaveURL('/');
@@ -67,7 +59,7 @@ for (const { description, username, password, expectedError } of invalidLoginCas
 // Direct URL access to inventory without login redirects
 // back to the login page with an error
 // ============================================================
-test('direct URL access to inventory without login redirects with error', async ({ page }) => {
+test('direct URL access to inventory without login redirects with error', async ({ page, loginPage }) => {
   await page.goto('/inventory.html');
 
   await expect(page).toHaveURL('/');

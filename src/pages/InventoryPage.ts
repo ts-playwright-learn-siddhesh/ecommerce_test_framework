@@ -13,6 +13,7 @@ export class InventoryPage extends BasePage {
 
   async logout(): Promise<LoginPage> {
     await this.menuButton.click();
+    await this.logoutLink.waitFor({ state: 'visible' });
     await this.logoutLink.click();
     return new LoginPage(this.page);
   }

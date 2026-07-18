@@ -1,14 +1,11 @@
 import type { Page } from '@playwright/test';
 import { BasePage } from './BasePage.js';
 import { LoginPage } from './LoginPage.js';
-import { CartPage } from './CartPage.js';
 
-export class InventoryPage extends BasePage {
-  readonly inventoryContainer = this.locatorForDataTest('inventory-container');
+export class CartPage extends BasePage {
+  readonly cartContentsContainer = this.locatorForDataTest('cart-contents-container');
   readonly menuButton = this.page.locator('#react-burger-menu-btn');
   readonly logoutLink = this.locatorForDataTest('logout-sidebar-link');
-  readonly addBackpackToCartButton = this.locatorForDataTest('add-to-cart-sauce-labs-backpack');
-  readonly cartLink = this.locatorForDataTest('shopping-cart-link');
 
   constructor(page: Page) {
     super(page);
@@ -20,14 +17,5 @@ export class InventoryPage extends BasePage {
     await this.logoutLink.waitFor({ state: 'visible' });
     await this.logoutLink.click();
     return new LoginPage(this.page);
-  }
-
-  async addBackpackToCart(): Promise<void> {
-    await this.addBackpackToCartButton.click();
-  }
-
-  async goToCart(): Promise<CartPage> {
-    await this.cartLink.click();
-    return new CartPage(this.page);
   }
 }

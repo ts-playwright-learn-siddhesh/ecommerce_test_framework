@@ -39,3 +39,21 @@ test('expired session redirects to login with error on next navigation', async (
     "Epic sadface: You can only access '/inventory.html' when you are logged in."
   );
 });
+
+
+// ============================================================
+// Logout from a non-inventory page (cart) still clears session
+// correctly, same as logging out from the inventory page
+// ============================================================
+test('logout from cart page clears session and redirects to login', async ({ page, loggedInPage }) => {
+  await loggedInPage.addBackpackToCart();
+  const cartPage = await loggedInPage.goToCart();
+
+  await expect(page).toHaveURL(/cart\.html/);
+  await expect(cartPage.cartContentsContainer).toBeVisible();
+
+  const loggedOutPage = await cartPage.logout();
+
+  await expect(page).toHaveURL('/');
+  await expect(loggedOutPage.usernameInput).toBeVisible();
+});

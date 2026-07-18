@@ -1,8 +1,9 @@
 
 # Playwright
 node_modules/
-/test-results/
-/playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Reports (Playwright HTML/test-results, Allure results/report)
+/reports/

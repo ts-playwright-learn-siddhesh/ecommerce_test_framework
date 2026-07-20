@@ -2,23 +2,20 @@ import type { Page } from '@playwright/test';
 import { BasePage } from './BasePage.js';
 import { LoginPage } from './LoginPage.js';
 import { CartPage } from './CartPage.js';
+import { SidebarMenu } from './SidebarMenu.js';
 
 export class InventoryPage extends BasePage {
   readonly inventoryContainer = this.locatorForDataTest('inventory-container');
-  readonly menuButton = this.page.locator('#react-burger-menu-btn');
-  readonly logoutLink = this.locatorForDataTest('logout-sidebar-link');
   readonly addBackpackToCartButton = this.locatorForDataTest('add-to-cart-sauce-labs-backpack');
   readonly cartLink = this.locatorForDataTest('shopping-cart-link');
+  private readonly sidebarMenu = new SidebarMenu(this.page);
 
   constructor(page: Page) {
     super(page);
   }
 
   async logout(): Promise<LoginPage> {
-    await this.page.addStyleTag({ content: '.bm-menu-wrap, .bm-menu { transition: none !important; }' });
-    await this.menuButton.click();
-    await this.logoutLink.waitFor({ state: 'visible' });
-    await this.logoutLink.click();
+    await this.sidebarMenu.logout();
     return new LoginPage(this.page);
   }
 

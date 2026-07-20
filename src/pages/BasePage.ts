@@ -3,6 +3,10 @@ import type { Locator, Page } from '@playwright/test';
 export abstract class BasePage {
   constructor(protected readonly page: Page) {}
 
+  get currentPage(): Page {
+    return this.page;
+  }
+
   async goto(path: string): Promise<void> {
     await this.page.goto(path);
   }

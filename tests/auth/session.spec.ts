@@ -5,7 +5,8 @@ import { users } from '../../src/fixtures/users.fixture.js';
 // ============================================================
 // Logout clears session and redirects to login
 // ============================================================
-test('logout clears session and redirects to login', async ({ page, loggedInPage }) => {
+test('logout clears session and redirects to login', async ({ loggedInPage }) => {
+  const page = loggedInPage.currentPage;
   const loggedOutPage = await loggedInPage.logout();
 
   await expect(page).toHaveURL('/');
@@ -16,7 +17,8 @@ test('logout clears session and redirects to login', async ({ page, loggedInPage
 // ============================================================
 // Session persists across page reload
 // ============================================================
-test('session persists across page reload', async ({ page, loggedInPage }) => {
+test('session persists across page reload', async ({ loggedInPage }) => {
+  const page = loggedInPage.currentPage;
   await page.reload();
 
   await expect(page).toHaveURL(/inventory\.html/);
@@ -45,7 +47,8 @@ test('expired session redirects to login with error on next navigation', async (
 // Logout from a non-inventory page (cart) still clears session
 // correctly, same as logging out from the inventory page
 // ============================================================
-test('logout from cart page clears session and redirects to login', async ({ page, loggedInPage }) => {
+test('logout from cart page clears session and redirects to login', async ({ loggedInPage }) => {
+  const page = loggedInPage.currentPage;
   await loggedInPage.addBackpackToCart();
   const cartPage = await loggedInPage.goToCart();
 

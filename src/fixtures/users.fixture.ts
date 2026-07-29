@@ -1,4 +1,18 @@
+function requiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return value;
+}
+
 export const users = {
-  standardUser: { username: 'standard_user', password: 'secret_sauce' },
-  lockedOutUser: { username: 'locked_out_user', password: 'secret_sauce' },
+  standardUser: {
+    username: requiredEnv('STANDARD_USER_USERNAME'),
+    password: requiredEnv('STANDARD_USER_PASSWORD'),
+  },
+  lockedOutUser: {
+    username: requiredEnv('LOCKED_OUT_USER_USERNAME'),
+    password: requiredEnv('LOCKED_OUT_USER_PASSWORD'),
+  },
 } as const;

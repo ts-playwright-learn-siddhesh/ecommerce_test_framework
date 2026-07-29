@@ -7,3 +7,6 @@ node_modules/
 
 # Reports (Playwright HTML/test-results, Allure results/report)
 /reports/
+
+# Environment variables (contains credentials — never commit)
+.env

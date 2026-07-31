@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
-import { BasePage } from './BasePage.js';
-import { LoginPage } from './LoginPage.js';
-import { SidebarMenu } from './SidebarMenu.js';
+import { BasePage } from './BasePage.ts';
+import { LoginPage } from './LoginPage.ts';
+import { SidebarMenu } from './SidebarMenu.ts';
 
 export class CartPage extends BasePage {
   readonly cartContentsContainer = this.locatorForDataTest('cart-contents-container');

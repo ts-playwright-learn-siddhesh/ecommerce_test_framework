@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
-import { LoginPage } from '../../src/pages/LoginPage.js';
-import { users } from '../../src/fixtures/users.fixture.js';
+import { LoginPage } from '../../src/pages/LoginPage.ts';
+import { users } from '../../src/fixtures/users.fixture.ts';
 
 const authFile = 'playwright/.auth/user.json';
 

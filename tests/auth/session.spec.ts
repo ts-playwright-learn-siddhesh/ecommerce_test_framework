@@ -1,5 +1,5 @@
-import { test, expect } from '../../src/fixtures/test-base.js';
-import { users } from '../../src/fixtures/users.fixture.js';
+import { test, expect } from '../../src/fixtures/test-base.ts';
+import { users } from '../../src/fixtures/users.fixture.ts';
 
 
 // ============================================================

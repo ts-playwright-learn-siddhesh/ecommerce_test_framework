@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
-import { BasePage } from './BasePage.js';
-import { LoginPage } from './LoginPage.js';
-import { CartPage } from './CartPage.js';
-import { SidebarMenu } from './SidebarMenu.js';
+import { BasePage } from './BasePage.ts';
+import { LoginPage } from './LoginPage.ts';
+import { CartPage } from './CartPage.ts';
+import { SidebarMenu } from './SidebarMenu.ts';
 
 export class InventoryPage extends BasePage {
   readonly inventoryContainer = this.locatorForDataTest('inventory-container');

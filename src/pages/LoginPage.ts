@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
-import { BasePage } from './BasePage.js';
-import { InventoryPage } from './InventoryPage.js';
+import { BasePage } from './BasePage.ts';
+import { InventoryPage } from './InventoryPage.ts';
 
 export class LoginPage extends BasePage {
   readonly usernameInput = this.locatorForDataTest('username');

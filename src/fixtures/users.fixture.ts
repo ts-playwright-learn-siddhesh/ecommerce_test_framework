@@ -15,4 +15,12 @@ export const users = {
     username: requiredEnv('LOCKED_OUT_USER_USERNAME'),
     password: requiredEnv('LOCKED_OUT_USER_PASSWORD'),
   },
+  problemUser: {
+    username: requiredEnv('PROBLEM_USER_USERNAME'),
+    password: requiredEnv('PROBLEM_USER_PASSWORD'),
+  },
+  performanceGlitchUser: {
+    username: requiredEnv('PERFORMANCE_GLITCH_USER_USERNAME'),
+    password: requiredEnv('PERFORMANCE_GLITCH_USER_PASSWORD'),
+  },
 } as const;

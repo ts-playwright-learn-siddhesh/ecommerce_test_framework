@@ -7,6 +7,7 @@ export class LoginPage extends BasePage {
   readonly passwordInput = this.locatorForDataTest('password');
   readonly loginButton = this.locatorForDataTest('login-button');
   readonly errorMessage = this.locatorForDataTest('error');
+  readonly errorDismissButton = this.locatorForDataTest('error-button');
 
   constructor(page: Page) {
     super(page);
@@ -27,5 +28,9 @@ export class LoginPage extends BasePage {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
+  }
+
+  async dismissError(): Promise<void> {
+    await this.errorDismissButton.click();
   }
 }

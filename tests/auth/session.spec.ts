@@ -1,5 +1,6 @@
 import { test, expect } from '../../src/fixtures/test-base.js';
 import { users } from '../../src/fixtures/users.fixture.js';
+import { INVENTORY_ACCESS_DENIED_ERROR } from '../../src/pages/LoginPage.js';
 
 test.describe(
   'Authentication — Session',
@@ -65,9 +66,7 @@ test.describe(
         await page.goto('/inventory.html');
 
         await expect(page).toHaveURL('/');
-        await expect(loginPage.errorMessage).toHaveText(
-          "Epic sadface: You can only access '/inventory.html' when you are logged in."
-        );
+        await expect(loginPage.errorMessage).toHaveText(INVENTORY_ACCESS_DENIED_ERROR);
       }
     );
 

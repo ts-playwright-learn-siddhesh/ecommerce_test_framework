@@ -1,6 +1,10 @@
 import { test, expect } from '../../src/fixtures/test-base.js';
 import { users } from '../../src/fixtures/users.fixture.js';
 import { INVENTORY_ACCESS_DENIED_ERROR } from '../../src/pages/LoginPage.js';
+import { invalidLoginCases } from './login.data.js';
+
+// invalidLoginCases starts right after TC-AUTH-001 (the valid-login test below)
+const FIRST_INVALID_CASE_NUMBER = 2;
 
 test.describe(
   'Authentication — Login',
@@ -32,52 +36,9 @@ test.describe(
     // empty each submit the login form and stay on the login page with
     // the matching "Epic sadface" error message shown
     // ============================================================
-    const invalidLoginCases = [
-      {
-        testCaseId: 'TC-AUTH-002',
-        description: 'invalid username',
-        username: 'invalid_user',
-        password: users.standardUser.password,
-        expectedError: 'Epic sadface: Username and password do not match any user in this service',
-      },
-      {
-        testCaseId: 'TC-AUTH-003',
-        description: 'invalid password',
-        username: users.standardUser.username,
-        password: 'wrong_password',
-        expectedError: 'Epic sadface: Username and password do not match any user in this service',
-      },
-      {
-        testCaseId: 'TC-AUTH-004',
-        description: 'locked-out user',
-        username: users.lockedOutUser.username,
-        password: users.lockedOutUser.password,
-        expectedError: 'Epic sadface: Sorry, this user has been locked out.',
-      },
-      {
-        testCaseId: 'TC-AUTH-005',
-        description: 'empty username',
-        username: '',
-        password: users.standardUser.password,
-        expectedError: 'Epic sadface: Username is required',
-      },
-      {
-        testCaseId: 'TC-AUTH-006',
-        description: 'empty password',
-        username: users.standardUser.username,
-        password: '',
-        expectedError: 'Epic sadface: Password is required',
-      },
-      {
-        testCaseId: 'TC-AUTH-007',
-        description: 'both fields empty',
-        username: '',
-        password: '',
-        expectedError: 'Epic sadface: Username is required',
-      },
-    ];
+    invalidLoginCases.forEach(({ description, username, password, expectedError }, index) => {
+      const testCaseId = `TC-AUTH-${String(index + FIRST_INVALID_CASE_NUMBER).padStart(3, '0')}`;
 
-    for (const { testCaseId, description, username, password, expectedError } of invalidLoginCases) {
       test(
         `[${testCaseId}] ${description} shows error`,
         {
@@ -91,7 +52,7 @@ test.describe(
           await expect(loginPage.errorMessage).toHaveText(expectedError);
         }
       );
-    }
+    });
 
     // ============================================================
     // TC-AUTH-008: Navigating directly to /inventory.html without an

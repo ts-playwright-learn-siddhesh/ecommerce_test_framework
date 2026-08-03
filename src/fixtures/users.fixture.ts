@@ -6,21 +6,27 @@ function requiredEnv(name: string): string {
   return value;
 }
 
+const saucedemoPassword = requiredEnv('SAUCEDEMO_PASSWORD');
+const standardUserUsername = requiredEnv('STANDARD_USER_USERNAME');
+const lockedOutUserUsername = 'locked_out_user';
+const problemUserUsername = 'problem_user';
+const performanceGlitchUserUsername = 'performance_glitch_user';
+
 export const users = {
   standardUser: {
-    username: requiredEnv('STANDARD_USER_USERNAME'),
-    password: requiredEnv('STANDARD_USER_PASSWORD'),
+    username: standardUserUsername,
+    password: saucedemoPassword,
   },
   lockedOutUser: {
-    username: requiredEnv('LOCKED_OUT_USER_USERNAME'),
-    password: requiredEnv('LOCKED_OUT_USER_PASSWORD'),
+    username: lockedOutUserUsername,
+    password: saucedemoPassword,
   },
   problemUser: {
-    username: requiredEnv('PROBLEM_USER_USERNAME'),
-    password: requiredEnv('PROBLEM_USER_PASSWORD'),
+    username: problemUserUsername,
+    password: saucedemoPassword,
   },
   performanceGlitchUser: {
-    username: requiredEnv('PERFORMANCE_GLITCH_USER_USERNAME'),
-    password: requiredEnv('PERFORMANCE_GLITCH_USER_PASSWORD'),
+    username: performanceGlitchUserUsername,
+    password: saucedemoPassword,
   },
 } as const;

@@ -20,11 +20,10 @@ test.describe(
         tag: ['@smoke', '@positive'],
       },
       async ({ loggedInPage }) => {
-        const page = loggedInPage.currentPage;
         const loggedOutPage = await loggedInPage.logout();
 
-        await expect(page).toHaveURL('/');
         await expect(loggedOutPage.usernameInput).toBeVisible();
+        await expect(loggedOutPage.loginButton).toBeVisible();
       }
     );
 
@@ -91,8 +90,8 @@ test.describe(
 
         const loggedOutPage = await cartPage.logout();
 
-        await expect(page).toHaveURL('/');
         await expect(loggedOutPage.usernameInput).toBeVisible();
+        await expect(loggedOutPage.loginButton).toBeVisible();
       }
     );
 

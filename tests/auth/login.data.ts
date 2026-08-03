@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { users } from '../../src/fixtures/users.fixture.js';
 
 // Order defines the test-case ID: login.spec.ts numbers these starting at
@@ -6,7 +7,7 @@ import { users } from '../../src/fixtures/users.fixture.js';
 export const invalidLoginCases = [
   {
     description: 'invalid username',
-    username: 'invalid_user',
+    username: faker.internet.username(),
     password: users.standardUser.password,
     expectedError: 'Epic sadface: Username and password do not match any user in this service',
   },

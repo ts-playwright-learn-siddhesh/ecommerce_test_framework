@@ -20,17 +20,19 @@ export class LoginPage extends BasePage {
     await this.goto('/');
   }
 
-  async login(username: string, password: string): Promise<InventoryPage> {
+  private async submitCredentials(username: string, password: string): Promise<void> {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
+  }
+
+  async login(username: string, password: string): Promise<InventoryPage> {
+    await this.submitCredentials(username, password);
     return new InventoryPage(this.page);
   }
 
   async loginExpectingFailure(username: string, password: string): Promise<void> {
-    await this.usernameInput.fill(username);
-    await this.passwordInput.fill(password);
-    await this.loginButton.click();
+    await this.submitCredentials(username, password);
   }
 
   async dismissError(): Promise<void> {

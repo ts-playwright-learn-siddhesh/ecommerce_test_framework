@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import { test, expect } from '../../src/fixtures/test-base.ts';
 import { users } from '../../src/fixtures/users.fixture.ts';
-=======
-import { test, expect } from '../../src/fixtures/test-base.js';
-import { users } from '../../src/fixtures/users.fixture.js';
-import { INVENTORY_ACCESS_DENIED_ERROR } from '../../src/pages/LoginPage.js';
-import { invalidLoginCases } from './login.data.js';
->>>>>>> main
+import { INVENTORY_ACCESS_DENIED_ERROR } from '../../src/pages/LoginPage.ts';
+import { invalidLoginCases } from './login.data.ts';
 
 // invalidLoginCases starts right after TC-AUTH-001 (the valid-login test below)
 const FIRST_INVALID_CASE_NUMBER = 2;

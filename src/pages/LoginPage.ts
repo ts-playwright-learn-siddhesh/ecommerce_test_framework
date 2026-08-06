@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
-import { BasePage } from './BasePage.js';
-import { InventoryPage } from './InventoryPage.js';
+import { BasePage } from './BasePage.ts';
+import { InventoryPage } from './InventoryPage.ts';
 
 export const INVENTORY_ACCESS_DENIED_ERROR =
   "Epic sadface: You can only access '/inventory.html' when you are logged in.";

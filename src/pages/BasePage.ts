@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
-import { LoginPage } from './LoginPage.js';
-import { SidebarMenu } from './SidebarMenu.js';
+import { LoginPage } from './LoginPage.ts';
+import { SidebarMenu } from './SidebarMenu.ts';
 
 export abstract class BasePage {
   protected readonly sidebarMenu: SidebarMenu;

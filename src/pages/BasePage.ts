@@ -1,5 +1,4 @@
 import type { Locator, Page } from '@playwright/test';
-import { LoginPage } from './LoginPage.ts';
 import { SidebarMenu } from './SidebarMenu.ts';
 
 export abstract class BasePage {
@@ -25,8 +24,7 @@ export abstract class BasePage {
     return this.page.locator(`[data-test="${dataTestValue}"]`);
   }
 
-  async logout(): Promise<LoginPage> {
+  async logout(): Promise<void> {
     await this.sidebarMenu.logout();
-    return new LoginPage(this.page);
   }
 }

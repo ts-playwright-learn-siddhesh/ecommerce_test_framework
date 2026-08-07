@@ -90,8 +90,8 @@ test.describe(
         await expect(page).toHaveURL(cartUrl);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
-        await loggedInPage.logout();
-        const loggedOutPage = new LoginPage(loggedInPage.currentPage);
+        await cartPage.logout();
+        const loggedOutPage = new LoginPage(cartPage.currentPage);
 
         await expect(loggedOutPage.usernameInput).toBeVisible();
         await expect(loggedOutPage.loginButton).toBeVisible();

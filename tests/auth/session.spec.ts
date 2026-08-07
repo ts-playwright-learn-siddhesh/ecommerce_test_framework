@@ -1,6 +1,6 @@
 import { test, expect } from '@/fixtures/test-base.ts';
 import { users } from '@/fixtures/users.fixture.ts';
-import { INVENTORY_ACCESS_DENIED_ERROR } from '@/pages/LoginPage.ts';
+import { INVENTORY_ACCESS_DENIED_ERROR, LoginPage } from '@/pages/LoginPage.ts';
 
 test.describe(
   'Authentication — Session',
@@ -20,7 +20,8 @@ test.describe(
         tag: ['@smoke', '@positive'],
       },
       async ({ loggedInPage }) => {
-        const loggedOutPage = await loggedInPage.logout();
+        await loggedInPage.logout();
+        const loggedOutPage = new LoginPage(loggedInPage.currentPage);
 
         await expect(loggedOutPage.usernameInput).toBeVisible();
         await expect(loggedOutPage.loginButton).toBeVisible();
@@ -88,7 +89,8 @@ test.describe(
         await expect(page).toHaveURL(/cart\.html/);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
-        const loggedOutPage = await cartPage.logout();
+        await loggedInPage.logout();
+        const loggedOutPage = new LoginPage(loggedInPage.currentPage);
 
         await expect(loggedOutPage.usernameInput).toBeVisible();
         await expect(loggedOutPage.loginButton).toBeVisible();

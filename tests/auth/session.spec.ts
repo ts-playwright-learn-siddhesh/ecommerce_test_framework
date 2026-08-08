@@ -126,41 +126,47 @@ test.describe(
     // TC-STATE-006: Logging in with problem_user's credentials succeeds
     // and reaches /inventory.html with the inventory container visible,
     // same as a standard user
-    // ============================================================
-    test(
-      '[TC-STATE-006] login with problem_user reaches inventory page',
-      {
-        annotation: [{ type: 'test-case', description: 'TC-STATE-006' }],
-        tag: ['@positive'],
-      },
-      async ({ page, loginPage }) => {
-        const inventoryPage = await loginPage.login(users.problemUser.username, users.problemUser.password);
-
-        await expect(page).toHaveURL(/inventory\.html/);
-        await expect(inventoryPage.inventoryContainer).toBeVisible();
-      }
-    );
-
-    // ============================================================
+    //
     // TC-STATE-007: Logging in with performance_glitch_user's credentials
     // succeeds and reaches /inventory.html with the inventory container
     // visible, same as a standard user, though the login may be slower
+    //
+    // Both drive their own login, so they need the same clean,
+    // unauthenticated context as TC-STATE-003 above.
     // ============================================================
-    test(
-      '[TC-STATE-007] login with performance_glitch_user reaches inventory page',
-      {
-        annotation: [{ type: 'test-case', description: 'TC-STATE-007' }],
-        tag: ['@positive'],
-      },
-      async ({ page, loginPage }) => {
-        const inventoryPage = await loginPage.login(
-          users.performanceGlitchUser.username,
-          users.performanceGlitchUser.password
-        );
+    test.describe(() => {
+      test.use({ storageState: { cookies: [], origins: [] } });
 
-        await expect(page).toHaveURL(/inventory\.html/);
-        await expect(inventoryPage.inventoryContainer).toBeVisible();
-      }
-    );
+      test(
+        '[TC-STATE-006] login with problem_user reaches inventory page',
+        {
+          annotation: [{ type: 'test-case', description: 'TC-STATE-006' }],
+          tag: ['@positive'],
+        },
+        async ({ page, loginPage }) => {
+          const inventoryPage = await loginPage.login(users.problemUser.username, users.problemUser.password);
+
+          await expect(page).toHaveURL(/inventory\.html/);
+          await expect(inventoryPage.inventoryContainer).toBeVisible();
+        }
+      );
+
+      test(
+        '[TC-STATE-007] login with performance_glitch_user reaches inventory page',
+        {
+          annotation: [{ type: 'test-case', description: 'TC-STATE-007' }],
+          tag: ['@positive'],
+        },
+        async ({ page, loginPage }) => {
+          const inventoryPage = await loginPage.login(
+            users.performanceGlitchUser.username,
+            users.performanceGlitchUser.password
+          );
+
+          await expect(page).toHaveURL(/inventory\.html/);
+          await expect(inventoryPage.inventoryContainer).toBeVisible();
+        }
+      );
+    });
   }
 );

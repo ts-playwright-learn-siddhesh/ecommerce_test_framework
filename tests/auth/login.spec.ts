@@ -16,6 +16,7 @@ test.describe(
     // TC-AUTH-001: Valid login with standard_user's credentials redirects
     // from the login page to /inventory.html with the inventory container visible
     // ============================================================
+    test.use({ storageState: { cookies: [], origins: [] } });
     test(
       '[TC-AUTH-001] valid login redirects to inventory page',
       {

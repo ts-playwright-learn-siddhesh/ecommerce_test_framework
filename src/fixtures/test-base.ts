@@ -9,12 +9,9 @@ export const test = base.extend<{ loginPage: LoginPage; loggedInPage: InventoryP
     await use(loginPage);
   },
 
-  loggedInPage: async ({ browser }, use) => {
-    const context = await browser.newContext({ storageState: 'playwright/.auth/user.json' });
-    const page = await context.newPage();
+  loggedInPage: async ({ page }, use) => {
     await page.goto('/inventory.html');
     await use(new InventoryPage(page));
-    await context.close();
   },
 });
 

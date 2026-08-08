@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
-import { BasePage } from './BasePage.ts';
+import { AuthenticatedPage } from './AuthenticatedPage.ts';
 
-export class CartPage extends BasePage {
+export class CartPage extends AuthenticatedPage {
   readonly cartContentsContainer = this.locatorForDataTest('cart-contents-container');
 
   constructor(page: Page) {

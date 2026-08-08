@@ -1,12 +1,8 @@
 import type { Locator, Page } from '@playwright/test';
-import { SidebarMenu } from './SidebarMenu.ts';
 
 export abstract class BasePage {
-  protected readonly sidebarMenu: SidebarMenu;
 
-  constructor(protected readonly page: Page) {
-    this.sidebarMenu = new SidebarMenu(this.page);
-  }
+  constructor(protected readonly page: Page) {}
 
   get currentPage(): Page {
     return this.page;
@@ -22,9 +18,5 @@ export abstract class BasePage {
 
   protected locatorForDataTest(dataTestValue: string): Locator {
     return this.page.locator(`[data-test="${dataTestValue}"]`);
-  }
-
-  async logout(): Promise<void> {
-    await this.sidebarMenu.logout();
   }
 }

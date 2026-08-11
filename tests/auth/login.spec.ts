@@ -1,6 +1,7 @@
 import { test, expect } from '@/fixtures/test-base.ts';
 import { users } from '@/fixtures/users.fixture.ts';
 import { INVENTORY_ACCESS_DENIED_ERROR } from '@/pages/LoginPage.ts';
+import { InventoryPage } from '@/pages/InventoryPage.ts';
 import { invalidLoginCases } from './login.data.ts';
 
 // invalidLoginCases starts right after TC-AUTH-001 (the valid-login test below)
@@ -26,7 +27,7 @@ test.describe(
       async ({ page, loginPage }) => {
         const inventoryPage = await loginPage.login(users.standardUser.username, users.standardUser.password);
 
-        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(page).toHaveURL(InventoryPage.url);
         await expect(inventoryPage.inventoryContainer).toBeVisible();
       }
     );

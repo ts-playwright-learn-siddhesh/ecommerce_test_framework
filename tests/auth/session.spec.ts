@@ -2,8 +2,7 @@ import { test, expect } from '@/fixtures/test-base.ts';
 import { users } from '@/fixtures/users.fixture.ts';
 import { INVENTORY_ACCESS_DENIED_ERROR, LoginPage } from '@/pages/LoginPage.ts';
 import { InventoryPage } from '@/pages/InventoryPage.ts';
-
-const cartUrl = /cart\.html/;
+import { CartPage } from '@/pages/CartPage.ts';
 
 test.describe(
   'Authentication — Session',
@@ -88,7 +87,7 @@ test.describe(
         await loggedInPage.addBackpackToCart();
         const cartPage = await loggedInPage.goToCart();
 
-        await expect(page).toHaveURL(cartUrl);
+        await expect(page).toHaveURL(CartPage.url);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
         await cartPage.logout();
@@ -115,11 +114,11 @@ test.describe(
 
         await loggedInPage.addBackpackToCart();
         const cartPage = await loggedInPage.goToCart();
-        await expect(page).toHaveURL(cartUrl);
+        await expect(page).toHaveURL(CartPage.url);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
         await page.goBack();
-        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(page).toHaveURL(InventoryPage.url);
         await expect(loggedInPage.inventoryContainer).toBeVisible();
       }
     );
@@ -138,7 +137,7 @@ test.describe(
       async ({ page, loginPage }) => {
         const inventoryPage = await loginPage.login(users.problemUser.username, users.problemUser.password);
 
-        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(page).toHaveURL(InventoryPage.url);
         await expect(inventoryPage.inventoryContainer).toBeVisible();
       }
     );
@@ -160,7 +159,7 @@ test.describe(
           users.performanceGlitchUser.password
         );
 
-        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(page).toHaveURL(InventoryPage.url);
         await expect(inventoryPage.inventoryContainer).toBeVisible();
       }
     );

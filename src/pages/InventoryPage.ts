@@ -11,6 +11,10 @@ export class InventoryPage extends BasePage {
     super(page);
   }
 
+  async goto(): Promise<void> {
+    await super.goto('/inventory.html');
+  }
+
   async addBackpackToCart(): Promise<void> {
     await this.addBackpackToCartButton.click();
   }

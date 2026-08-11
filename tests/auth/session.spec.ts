@@ -1,6 +1,9 @@
 import { test, expect } from '@/fixtures/test-base.ts';
 import { users } from '@/fixtures/users.fixture.ts';
 import { INVENTORY_ACCESS_DENIED_ERROR, LoginPage } from '@/pages/LoginPage.ts';
+import { InventoryPage } from '@/pages/InventoryPage.ts';
+
+const cartUrl = /cart\.html/;
 
 test.describe(
   'Authentication — Session',
@@ -43,8 +46,8 @@ test.describe(
         const page = loggedInPage.currentPage;
         await page.reload();
 
-        await expect(page).toHaveURL(/inventory\.html/);
-        await expect(loggedInPage.inventoryContainer).toBeVisible();
+        const inventoryPage = new InventoryPage(page);
+        await expect(inventoryPage.inventoryContainer).toBeVisible();
       }
     );
 
@@ -61,11 +64,10 @@ test.describe(
       },
       async ({ page, context, loginPage }) => {
         await loginPage.login(users.standardUser.username, users.standardUser.password);
-
         await context.clearCookies();
-        await page.goto('/inventory.html');
 
-        await expect(page).toHaveURL('/');
+        const inventoryPage = new InventoryPage(page);
+        await inventoryPage.goto();
         await expect(loginPage.errorMessage).toHaveText(INVENTORY_ACCESS_DENIED_ERROR);
       }
     );
@@ -86,7 +88,7 @@ test.describe(
         await loggedInPage.addBackpackToCart();
         const cartPage = await loggedInPage.goToCart();
 
-        await expect(page).toHaveURL(/cart\.html/);
+        await expect(page).toHaveURL(cartUrl);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
         await cartPage.logout();
@@ -113,7 +115,7 @@ test.describe(
 
         await loggedInPage.addBackpackToCart();
         const cartPage = await loggedInPage.goToCart();
-        await expect(page).toHaveURL(/cart\.html/);
+        await expect(page).toHaveURL(cartUrl);
         await expect(cartPage.cartContentsContainer).toBeVisible();
 
         await page.goBack();

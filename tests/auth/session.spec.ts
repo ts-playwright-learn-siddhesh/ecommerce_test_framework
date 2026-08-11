@@ -1,6 +1,6 @@
-import { test, expect } from '../../src/fixtures/test-base.ts';
-import { users } from '../../src/fixtures/users.fixture.ts';
-import { INVENTORY_ACCESS_DENIED_ERROR } from '../../src/pages/LoginPage.ts';
+import { test, expect } from '@/fixtures/test-base.ts';
+import { users } from '@/fixtures/users.fixture.ts';
+import { INVENTORY_ACCESS_DENIED_ERROR } from '@/pages/LoginPage.ts';
 
 test.describe(
   'Authentication — Session',

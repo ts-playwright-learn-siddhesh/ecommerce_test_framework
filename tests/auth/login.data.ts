@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { users } from '../../src/fixtures/users.fixture.ts';
+import { users } from '@/fixtures/users.fixture.ts';
 
 // Order defines the test-case ID: login.spec.ts numbers these starting at
 // TC-AUTH-002 by array index, so reordering or inserting a case here

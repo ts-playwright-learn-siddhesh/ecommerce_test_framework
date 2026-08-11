@@ -3,6 +3,8 @@ import { BasePage } from './BasePage.ts';
 import { CartPage } from './CartPage.ts';
 
 export class InventoryPage extends BasePage {
+  static readonly url = /inventory\.html/;
+
   readonly inventoryContainer = this.locatorForDataTest('inventory-container');
   readonly addBackpackToCartButton = this.locatorForDataTest('add-to-cart-sauce-labs-backpack');
   readonly cartLink = this.locatorForDataTest('shopping-cart-link');

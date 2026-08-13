@@ -1,7 +1,9 @@
 import { test, expect } from '@/fixtures/test-base.ts';
 import { users } from '@/fixtures/users.fixture.ts';
 import { INVENTORY_ACCESS_DENIED_ERROR } from '@/pages/LoginPage.ts';
+import { InventoryPage } from '@/pages/InventoryPage.ts';
 import { invalidLoginCases } from './login.data.ts';
+import { getTestCaseId } from '@tests/helper.ts';
 
 // invalidLoginCases starts right after TC-AUTH-001 (the valid-login test below)
 const FIRST_INVALID_CASE_NUMBER = 2;
@@ -25,7 +27,7 @@ test.describe(
       async ({ page, loginPage }) => {
         const inventoryPage = await loginPage.login(users.standardUser.username, users.standardUser.password);
 
-        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(page).toHaveURL(InventoryPage.url);
         await expect(inventoryPage.inventoryContainer).toBeVisible();
       }
     );
@@ -37,7 +39,7 @@ test.describe(
     // the matching "Epic sadface" error message shown
     // ============================================================
     invalidLoginCases.forEach(({ description, username, password, expectedError }, index) => {
-      const testCaseId = `TC-AUTH-${String(index + FIRST_INVALID_CASE_NUMBER).padStart(3, '0')}`;
+      const testCaseId = getTestCaseId(index, FIRST_INVALID_CASE_NUMBER);
 
       test(
         `[${testCaseId}] ${description} shows error`,
@@ -66,7 +68,8 @@ test.describe(
         tag: ['@negative'],
       },
       async ({ page, loginPage }) => {
-        await page.goto('/inventory.html');
+        const inventoryPage = new InventoryPage(page);
+        await inventoryPage.goto();
 
         await expect(page).toHaveURL('/');
         await expect(loginPage.errorMessage).toHaveText(INVENTORY_ACCESS_DENIED_ERROR);

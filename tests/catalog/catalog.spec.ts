@@ -21,7 +21,7 @@ test.describe(
         await expect(loggedInPage.inventoryContainer).toBeVisible();
         await expect(loggedInPage.title).toBeVisible();
         await expect(loggedInPage.title).toHaveText('Products');
-        await expect(loggedInPage.inventoryItems).toHaveCount(6);
+        await expect(loggedInPage.inventoryItems).toHaveCount(expectedProducts.length);
       }
     );
 
@@ -38,9 +38,9 @@ test.describe(
       },
       async ({ loggedInPage }) => {
         const inventoryItems = loggedInPage.inventoryItems;
-        await expect(inventoryItems).toHaveCount(6);
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < expectedProducts.length; i++) {
           const item = inventoryItems.nth(i);
           await expect(item.locator('img')).toBeVisible();
           await expect(item.locator('[data-test="inventory-item-name"]')).toBeVisible();
@@ -68,9 +68,9 @@ test.describe(
       },
       async ({ loggedInPage }) => {
         const inventoryItems = loggedInPage.inventoryItems;
-        await expect(inventoryItems).toHaveCount(6);
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < expectedProducts.length; i++) {
           const image = inventoryItems.nth(i).locator('img');
 
           await expect(image).toHaveJSProperty('complete', true);

@@ -21,6 +21,11 @@ export class InventoryPage extends BasePage {
     await this.addBackpackToCartButton.click();
   }
 
+  async addProductToCart(productName: string): Promise<void> {
+    const slug = productName.toLowerCase().replace(/\s+/g, '-');
+    await this.locatorForDataTest(`add-to-cart-${slug}`).click();
+  }
+
   async goToCart(): Promise<CartPage> {
     await this.cartLink.click();
     return new CartPage(this.page);

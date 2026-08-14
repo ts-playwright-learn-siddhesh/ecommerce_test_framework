@@ -6,6 +6,8 @@ export class InventoryPage extends BasePage {
   static readonly url = /inventory\.html/;
 
   readonly inventoryContainer = this.locatorForDataTest('inventory-container');
+  readonly title = this.locatorForDataTest('title');
+  readonly inventoryItems = this.locatorForDataTest('inventory-item');
   readonly addBackpackToCartButton = this.locatorForDataTest('add-to-cart-sauce-labs-backpack');
   readonly cartLink = this.locatorForDataTest('shopping-cart-link');
 

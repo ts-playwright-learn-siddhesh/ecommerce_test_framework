@@ -15,7 +15,7 @@ test.describe(
       '[TC-CATALOG-001] inventory page loads with title and 6 products after login',
       {
         annotation: [{ type: 'test-case', description: 'TC-CATALOG-001' }],
-        tag: ['@smoke', '@positive'],
+        tag: ['@positive'],
       },
       async ({ loggedInPage }) => {
         await expect(loggedInPage.inventoryContainer).toBeVisible();
@@ -42,17 +42,15 @@ test.describe(
 
         for (let i = 0; i < expectedProducts.length; i++) {
           const item = inventoryItems.nth(i);
-          await expect(item.locator('img')).toBeVisible();
-          await expect(item.locator('[data-test="inventory-item-name"]')).toBeVisible();
-          await expect(item.locator('[data-test="inventory-item-desc"]')).toBeVisible();
-          await expect(item.locator('[data-test="inventory-item-price"]')).toHaveText(/^\$\d+\.\d{2}$/);
-          await expect(item.getByRole('button', { name: 'Add to cart' })).toBeVisible();
+          await expect(loggedInPage.itemImage(item)).toBeVisible();
+          await expect(loggedInPage.itemName(item)).toBeVisible();
+          await expect(loggedInPage.itemDescription(item)).toBeVisible();
+          await expect(loggedInPage.itemPrice(item)).toHaveText(/^\$\d+\.\d{2}$/);
+          await expect(loggedInPage.itemAddToCartButton(item)).toBeVisible();
         }
 
-        await expect(inventoryItems.locator('[data-test="inventory-item-name"]')).toHaveText(namesAscending);
-        await expect(inventoryItems.locator('[data-test="inventory-item-price"]')).toHaveText(
-          expectedProducts.map((p) => p.price)
-        );
+        await expect(loggedInPage.itemNames).toHaveText(namesAscending);
+        await expect(loggedInPage.itemPrices).toHaveText(expectedProducts.map((p) => p.price));
       }
     );
 
@@ -71,7 +69,7 @@ test.describe(
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
         for (let i = 0; i < expectedProducts.length; i++) {
-          const image = inventoryItems.nth(i).locator('img');
+          const image = loggedInPage.itemImage(inventoryItems.nth(i));
 
           await expect(image).toHaveJSProperty('complete', true);
           const naturalWidth = await image.evaluate((img) => (img as { naturalWidth: number }).naturalWidth);

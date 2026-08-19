@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage.ts';
 import { CartPage } from './CartPage.ts';
 
@@ -26,5 +26,33 @@ export class InventoryPage extends BasePage {
   async goToCart(): Promise<CartPage> {
     await this.cartLink.click();
     return new CartPage(this.page);
+  }
+
+  itemImage(item: Locator): Locator {
+    return item.locator('img');
+  }
+
+  itemName(item: Locator): Locator {
+    return item.locator('[data-test="inventory-item-name"]');
+  }
+
+  itemDescription(item: Locator): Locator {
+    return item.locator('[data-test="inventory-item-desc"]');
+  }
+
+  itemPrice(item: Locator): Locator {
+    return item.locator('[data-test="inventory-item-price"]');
+  }
+
+  itemAddToCartButton(item: Locator): Locator {
+    return item.getByRole('button', { name: 'Add to cart' });
+  }
+
+  get itemNames(): Locator {
+    return this.itemName(this.inventoryItems);
+  }
+
+  get itemPrices(): Locator {
+    return this.itemPrice(this.inventoryItems);
   }
 }

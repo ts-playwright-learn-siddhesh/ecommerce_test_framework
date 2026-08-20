@@ -8,3 +8,21 @@ export const expectedProducts = [
 ] as const;
 
 export const namesAscending = expectedProducts.map((p) => p.name);
+
+export const namesPriceAscending = [
+  'Sauce Labs Onesie',
+  'Sauce Labs Bike Light',
+  'Sauce Labs Bolt T-Shirt',
+  'Test.allTheThings() T-Shirt (Red)',
+  'Sauce Labs Backpack',
+  'Sauce Labs Fleece Jacket',
+];
+
+export const namesPriceDescending = [
+  'Sauce Labs Fleece Jacket',
+  'Sauce Labs Backpack',
+  'Sauce Labs Bolt T-Shirt',
+  'Test.allTheThings() T-Shirt (Red)',
+  'Sauce Labs Bike Light',
+  'Sauce Labs Onesie',
+];

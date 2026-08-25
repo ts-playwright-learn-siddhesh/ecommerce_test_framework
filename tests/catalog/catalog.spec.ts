@@ -1,5 +1,6 @@
 import { test, expect } from '@/fixtures/test-base.ts';
 import { expectedProducts, namesAscending, namesPriceAscending, namesPriceDescending } from './catalog.data.ts';
+import { CATALOG_PRODUCTS } from './catalog.constants.ts';
 
 test.describe(
   'Catalog — Inventory',
@@ -98,17 +99,23 @@ test.describe(
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        const backpackItem = inventoryItems.filter({ hasText: 'Sauce Labs Backpack' });
-        const recordedName = await loggedInPage.itemName(backpackItem).textContent();
+        const expectedBackpack = expectedProducts.find((p) => p.name === CATALOG_PRODUCTS.BACKPACK);
+        if (!expectedBackpack) {
+          throw new Error(`Missing expected product data for "${CATALOG_PRODUCTS.BACKPACK}"`);
+        }
+
+        const backpackItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.BACKPACK });
         const recordedDescription = await loggedInPage.itemDescription(backpackItem).textContent();
-        const recordedPrice = await loggedInPage.itemPrice(backpackItem).textContent();
+        if (!recordedDescription) {
+          throw new Error(`Missing recorded description for "${CATALOG_PRODUCTS.BACKPACK}"`);
+        }
 
         const detailPage = await loggedInPage.openProductDetail(backpackItem);
 
         await expect(detailPage.image).toBeVisible();
-        await expect(detailPage.name).toHaveText(recordedName ?? '');
-        await expect(detailPage.description).toHaveText(recordedDescription ?? '');
-        await expect(detailPage.price).toHaveText(recordedPrice ?? '');
+        await expect(detailPage.name).toHaveText(expectedBackpack.name);
+        await expect(detailPage.description).toHaveText(recordedDescription);
+        await expect(detailPage.price).toHaveText(expectedBackpack.price);
         await expect(detailPage.addToCartButton).toBeVisible();
         await expect(detailPage.backToProductsButton).toBeVisible();
       }
@@ -128,9 +135,9 @@ test.describe(
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        const bikeLightItem = inventoryItems.filter({ hasText: 'Sauce Labs Bike Light' });
+        const bikeLightItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.BIKE_LIGHT });
         const detailPage = await loggedInPage.openProductDetail(bikeLightItem);
-        await expect(detailPage.name).toHaveText('Sauce Labs Bike Light');
+        await expect(detailPage.name).toHaveText(CATALOG_PRODUCTS.BIKE_LIGHT);
 
         const inventoryPage = await detailPage.backToProducts();
 
@@ -159,7 +166,7 @@ test.describe(
         await expect(loggedInPage.sortDropdown).toHaveValue('hilo');
 
         const detailPage = await loggedInPage.openProductDetail(inventoryItems.first());
-        await expect(detailPage.name).toHaveText('Sauce Labs Fleece Jacket');
+        await expect(detailPage.name).toHaveText(CATALOG_PRODUCTS.FLEECE_JACKET);
 
         const inventoryPage = await detailPage.backToProducts();
 
@@ -182,19 +189,25 @@ test.describe(
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        const onesieItem = inventoryItems.filter({ hasText: 'Sauce Labs Onesie' });
-        const recordedName = await loggedInPage.itemName(onesieItem).textContent();
-        const recordedPrice = await loggedInPage.itemPrice(onesieItem).textContent();
+        const expectedOnesie = expectedProducts.find((p) => p.name === CATALOG_PRODUCTS.ONESIE);
+        if (!expectedOnesie) {
+          throw new Error(`Missing expected product data for "${CATALOG_PRODUCTS.ONESIE}"`);
+        }
+
+        const onesieItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.ONESIE });
         const recordedDescription = await loggedInPage.itemDescription(onesieItem).textContent();
         const recordedAlt = await loggedInPage.itemImage(onesieItem).getAttribute('alt');
         const recordedSrc = await loggedInPage.itemImage(onesieItem).getAttribute('src');
+        if (!recordedDescription || !recordedAlt) {
+          throw new Error(`Missing recorded description or alt text for "${CATALOG_PRODUCTS.ONESIE}"`);
+        }
 
         const detailPage = await loggedInPage.openProductDetail(onesieItem);
 
-        await expect(detailPage.name).toHaveText(recordedName ?? '');
-        await expect(detailPage.price).toHaveText(recordedPrice ?? '');
-        await expect(detailPage.description).toHaveText(recordedDescription ?? '');
-        await expect(detailPage.image).toHaveAttribute('alt', recordedAlt ?? '');
+        await expect(detailPage.name).toHaveText(expectedOnesie.name);
+        await expect(detailPage.price).toHaveText(expectedOnesie.price);
+        await expect(detailPage.description).toHaveText(recordedDescription);
+        await expect(detailPage.image).toHaveAttribute('alt', recordedAlt);
         expect(recordedSrc).toBeTruthy();
       }
     );

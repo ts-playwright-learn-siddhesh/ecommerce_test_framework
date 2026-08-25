@@ -1,28 +1,30 @@
+import { CATALOG_PRODUCTS } from './catalog.constants.ts';
+
 export const expectedProducts = [
-  { name: 'Sauce Labs Backpack', price: '$29.99' },
-  { name: 'Sauce Labs Bike Light', price: '$9.99' },
-  { name: 'Sauce Labs Bolt T-Shirt', price: '$15.99' },
-  { name: 'Sauce Labs Fleece Jacket', price: '$49.99' },
-  { name: 'Sauce Labs Onesie', price: '$7.99' },
-  { name: 'Test.allTheThings() T-Shirt (Red)', price: '$15.99' },
+  { name: CATALOG_PRODUCTS.BACKPACK, price: '$29.99' },
+  { name: CATALOG_PRODUCTS.BIKE_LIGHT, price: '$9.99' },
+  { name: CATALOG_PRODUCTS.BOLT_T_SHIRT, price: '$15.99' },
+  { name: CATALOG_PRODUCTS.FLEECE_JACKET, price: '$49.99' },
+  { name: CATALOG_PRODUCTS.ONESIE, price: '$7.99' },
+  { name: CATALOG_PRODUCTS.ALL_THE_THINGS_T_SHIRT, price: '$15.99' },
 ] as const;
 
 export const namesAscending = expectedProducts.map((p) => p.name);
 
 export const namesPriceAscending = [
-  'Sauce Labs Onesie',
-  'Sauce Labs Bike Light',
-  'Sauce Labs Bolt T-Shirt',
-  'Test.allTheThings() T-Shirt (Red)',
-  'Sauce Labs Backpack',
-  'Sauce Labs Fleece Jacket',
+  CATALOG_PRODUCTS.ONESIE,
+  CATALOG_PRODUCTS.BIKE_LIGHT,
+  CATALOG_PRODUCTS.BOLT_T_SHIRT,
+  CATALOG_PRODUCTS.ALL_THE_THINGS_T_SHIRT,
+  CATALOG_PRODUCTS.BACKPACK,
+  CATALOG_PRODUCTS.FLEECE_JACKET,
 ];
 
 export const namesPriceDescending = [
-  'Sauce Labs Fleece Jacket',
-  'Sauce Labs Backpack',
-  'Sauce Labs Bolt T-Shirt',
-  'Test.allTheThings() T-Shirt (Red)',
-  'Sauce Labs Bike Light',
-  'Sauce Labs Onesie',
+  CATALOG_PRODUCTS.FLEECE_JACKET,
+  CATALOG_PRODUCTS.BACKPACK,
+  CATALOG_PRODUCTS.BOLT_T_SHIRT,
+  CATALOG_PRODUCTS.ALL_THE_THINGS_T_SHIRT,
+  CATALOG_PRODUCTS.BIKE_LIGHT,
+  CATALOG_PRODUCTS.ONESIE,
 ];

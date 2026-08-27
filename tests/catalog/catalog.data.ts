@@ -11,6 +11,8 @@ export const expectedProducts = [
 
 export const namesAscending = expectedProducts.map((p) => p.name);
 
+export const namesDescending = [...namesAscending].reverse();
+
 export const namesPriceAscending = [
   CATALOG_PRODUCTS.ONESIE,
   CATALOG_PRODUCTS.BIKE_LIGHT,

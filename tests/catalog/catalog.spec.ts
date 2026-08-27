@@ -1,5 +1,11 @@
 import { test, expect } from '@/fixtures/test-base.ts';
-import { expectedProducts, namesAscending, namesPriceAscending, namesPriceDescending } from './catalog.data.ts';
+import {
+  expectedProducts,
+  namesAscending,
+  namesDescending,
+  namesPriceAscending,
+  namesPriceDescending,
+} from './catalog.data.ts';
 import { CATALOG_PRODUCTS } from './catalog.constants.ts';
 import { getExpectedProduct } from './catalog-utils.ts';
 
@@ -219,6 +225,125 @@ test.describe(
 
         await loggedInPage.sortBy('az');
         await expect(loggedInPage.itemNames).toHaveText(namesAscending);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-009: Selecting Price (low to high) sorts products
+    // by ascending price
+    // ============================================================
+    test(
+      '[TC-CATALOG-009] selecting Price (low to high) sorts products by ascending price',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-009' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+
+        await loggedInPage.sortBy('lohi');
+
+        await expect(loggedInPage.itemNames).toHaveText(namesPriceAscending);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-010: Selecting Name (Z to A) sorts products
+    // alphabetically descending
+    // ============================================================
+    test(
+      '[TC-CATALOG-010] selecting Name (Z to A) sorts products alphabetically descending',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-010' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+
+        await loggedInPage.sortBy('za');
+
+        await expect(loggedInPage.itemNames).toHaveText(namesDescending);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-011: Sort dropdown's selected option updates for
+    // each sort choice
+    // ============================================================
+    test(
+      '[TC-CATALOG-011] sort dropdown option selected attribute updates for each sort choice',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-011' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const sortDropdown = loggedInPage.sortDropdown;
+        await expect(sortDropdown).toHaveValue('az');
+        await expect(sortDropdown.locator('option[value="az"]')).toHaveJSProperty('selected', true);
+
+        await loggedInPage.sortBy('za');
+        await expect(sortDropdown).toHaveValue('za');
+        await expect(sortDropdown.locator('option[value="za"]')).toHaveJSProperty('selected', true);
+
+        await loggedInPage.sortBy('lohi');
+        await expect(sortDropdown).toHaveValue('lohi');
+        await expect(sortDropdown.locator('option[value="lohi"]')).toHaveJSProperty('selected', true);
+
+        await loggedInPage.sortBy('hilo');
+        await expect(sortDropdown).toHaveValue('hilo');
+        await expect(sortDropdown.locator('option[value="hilo"]')).toHaveJSProperty('selected', true);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-012: Hamburger menu opens showing All Items, About,
+    // Logout, Reset App State links
+    // ============================================================
+    test(
+      '[TC-CATALOG-012] hamburger menu opens showing All Items, About, Logout, Reset App State links',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-012' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+        await expect(loggedInPage.sidebarMenu.menuWrap).toBeHidden();
+
+        await loggedInPage.sidebarMenu.open();
+
+        await expect(loggedInPage.sidebarMenu.menuWrap).toBeVisible();
+        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(['All Items', 'About', 'Logout', 'Reset App State']);
+        await expect(loggedInPage.sidebarMenu.closeButton).toBeVisible();
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-013: Hamburger menu closes when the X button is
+    // clicked
+    // ============================================================
+    test(
+      '[TC-CATALOG-013] hamburger menu closes when the X button is clicked',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-013' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+
+        await loggedInPage.sidebarMenu.open();
+        await expect(loggedInPage.sidebarMenu.menuWrap).toBeVisible();
+        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(['All Items', 'About', 'Logout', 'Reset App State']);
+
+        await loggedInPage.sidebarMenu.close();
+
+        await expect(loggedInPage.sidebarMenu.menuWrap).toBeHidden();
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
       }
     );
   }

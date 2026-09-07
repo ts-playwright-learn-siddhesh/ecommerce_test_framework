@@ -1,6 +1,9 @@
 import type { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage.ts';
 import { CartPage } from './CartPage.ts';
+import { ProductDetailPage } from './ProductDetailPage.ts';
+
+export type SortOption = 'az' | 'za' | 'lohi' | 'hilo';
 
 export class InventoryPage extends BasePage {
   static readonly url = /inventory\.html/;
@@ -10,6 +13,7 @@ export class InventoryPage extends BasePage {
   readonly inventoryItems = this.locatorForDataTest('inventory-item');
   readonly addBackpackToCartButton = this.locatorForDataTest('add-to-cart-sauce-labs-backpack');
   readonly cartLink = this.locatorForDataTest('shopping-cart-link');
+  readonly sortDropdown = this.locatorForDataTest('product-sort-container');
 
   constructor(page: Page) {
     super(page);
@@ -26,6 +30,15 @@ export class InventoryPage extends BasePage {
   async goToCart(): Promise<CartPage> {
     await this.cartLink.click();
     return new CartPage(this.page);
+  }
+
+  async openProductDetail(item: Locator): Promise<ProductDetailPage> {
+    await this.itemName(item).click();
+    return new ProductDetailPage(this.page);
+  }
+
+  async sortBy(option: SortOption): Promise<void> {
+    await this.sortDropdown.selectOption(option);
   }
 
   itemImage(item: Locator): Locator {

@@ -1,5 +1,7 @@
 import { test, expect } from '@/fixtures/test-base.ts';
-import { expectedProducts, namesAscending } from './catalog.data.ts';
+import { expectedProducts, namesAscending, namesPriceAscending, namesPriceDescending } from './catalog.data.ts';
+import { CATALOG_PRODUCTS } from './catalog.constants.ts';
+import { getExpectedProduct } from './catalog-utils.ts';
 
 test.describe(
   'Catalog — Inventory',
@@ -81,6 +83,142 @@ test.describe(
           }
           await expect(image).toHaveAttribute('alt', expectedProduct.name);
         }
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-004: Clicking a product name opens its detail page
+    // with matching name, description, and price
+    // ============================================================
+    test(
+      '[TC-CATALOG-004] clicking a product name opens its detail page with matching name, description, and price',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-004' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+
+        const expectedBackpack = getExpectedProduct(CATALOG_PRODUCTS.BACKPACK);
+        const backpackItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.BACKPACK });
+        const recordedDescription = await loggedInPage.itemDescription(backpackItem).innerText();
+
+        const detailPage = await loggedInPage.openProductDetail(backpackItem);
+
+        await expect(detailPage.image).toBeVisible();
+        await expect(detailPage.name).toHaveText(expectedBackpack.name);
+        await expect(detailPage.description).toHaveText(recordedDescription);
+        await expect(detailPage.price).toHaveText(expectedBackpack.price);
+        await expect(detailPage.addToCartButton).toBeVisible();
+        await expect(detailPage.backToProductsButton).toBeVisible();
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-005: "Back to products" returns from the detail
+    // page to the full inventory grid
+    // ============================================================
+    test(
+      '[TC-CATALOG-005] Back to products returns from detail page to the full inventory grid',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-005' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+
+        const bikeLightItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.BIKE_LIGHT });
+        const detailPage = await loggedInPage.openProductDetail(bikeLightItem);
+        await expect(detailPage.name).toHaveText(CATALOG_PRODUCTS.BIKE_LIGHT);
+
+        const inventoryPage = await detailPage.backToProducts();
+
+        await expect(inventoryPage.inventoryContainer).toBeVisible();
+        await expect(inventoryPage.inventoryItems).toHaveCount(expectedProducts.length);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-006: Sort order resets to Name (A to Z) after
+    // returning from a product detail page
+    // ============================================================
+    test(
+      '[TC-CATALOG-006] sort order resets to Name (A to Z) after returning from a product detail page',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-006' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+
+        await loggedInPage.sortBy('hilo');
+        await expect(loggedInPage.itemNames).toHaveText(namesPriceDescending);
+        await expect(loggedInPage.sortDropdown).toHaveValue('hilo');
+
+        const detailPage = await loggedInPage.openProductDetail(inventoryItems.first());
+        await expect(detailPage.name).toHaveText(CATALOG_PRODUCTS.FLEECE_JACKET);
+
+        const inventoryPage = await detailPage.backToProducts();
+
+        await expect(inventoryPage.sortDropdown).toHaveValue('az');
+        await expect(inventoryPage.itemNames).toHaveText(namesAscending);
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-007: Inventory card and detail page show matching
+    // name, price, description, and image alt text
+    // ============================================================
+    test(
+      '[TC-CATALOG-007] inventory card and detail page show matching name, price, description, and image alt',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-007' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+
+        const expectedOnesie = getExpectedProduct(CATALOG_PRODUCTS.ONESIE);
+        const onesieItem = inventoryItems.filter({ hasText: CATALOG_PRODUCTS.ONESIE });
+        const recordedDescription = await loggedInPage.itemDescription(onesieItem).innerText();
+        const recordedAlt = await loggedInPage.itemImage(onesieItem).evaluate((image) => (image as { alt: string }).alt);
+        const recordedSrc = await loggedInPage.itemImage(onesieItem).getAttribute('src');
+        expect(recordedAlt).toBeTruthy();
+
+        const detailPage = await loggedInPage.openProductDetail(onesieItem);
+
+        await expect(detailPage.name).toHaveText(expectedOnesie.name);
+        await expect(detailPage.price).toHaveText(expectedOnesie.price);
+        await expect(detailPage.description).toHaveText(recordedDescription);
+        await expect(detailPage.image).toHaveAttribute('alt', recordedAlt);
+        expect(recordedSrc).toBeTruthy();
+      }
+    );
+
+    // ============================================================
+    // TC-CATALOG-008: Selecting Name (A to Z) sorts products
+    // alphabetically ascending
+    // ============================================================
+    test(
+      '[TC-CATALOG-008] selecting Name (A to Z) sorts products alphabetically ascending',
+      {
+        annotation: [{ type: 'test-case', description: 'TC-CATALOG-008' }],
+        tag: ['@positive'],
+      },
+      async ({ loggedInPage }) => {
+        const inventoryItems = loggedInPage.inventoryItems;
+        await expect(inventoryItems).toHaveCount(expectedProducts.length);
+
+        await loggedInPage.sortBy('lohi');
+        await expect(loggedInPage.itemNames).toHaveText(namesPriceAscending);
+
+        await loggedInPage.sortBy('az');
+        await expect(loggedInPage.itemNames).toHaveText(namesAscending);
       }
     );
   }

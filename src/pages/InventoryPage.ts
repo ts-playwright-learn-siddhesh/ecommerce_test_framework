@@ -27,6 +27,11 @@ export class InventoryPage extends BasePage {
     await this.addBackpackToCartButton.click();
   }
 
+  async addProductToCart(productName: string): Promise<void> {
+    const item = this.inventoryItems.filter({ hasText: productName });
+    await this.itemAddToCartButton(item).click();
+  }
+
   async goToCart(): Promise<CartPage> {
     await this.cartLink.click();
     return new CartPage(this.page);

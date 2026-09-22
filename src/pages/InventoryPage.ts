@@ -41,6 +41,10 @@ export class InventoryPage extends BasePage {
     await this.sortDropdown.selectOption(option);
   }
 
+  sortOption(value: SortOption): Locator {
+    return this.sortDropdown.locator(`option[value="${value}"]`);
+  }
+
   itemImage(item: Locator): Locator {
     return item.locator('img');
   }

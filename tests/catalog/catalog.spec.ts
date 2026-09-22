@@ -5,6 +5,8 @@ import {
   namesDescending,
   namesPriceAscending,
   namesPriceDescending,
+  SORT_OPTIONS,
+  EXPECTED_MENU_LINKS,
 } from './catalog.data.ts';
 import { CATALOG_PRODUCTS } from './catalog.constants.ts';
 import { getExpectedProduct } from './catalog-utils.ts';
@@ -159,18 +161,18 @@ test.describe(
       async ({ loggedInPage }) => {
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
-        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+        await expect(loggedInPage.sortDropdown).toHaveValue(SORT_OPTIONS.NAME_ASC);
 
-        await loggedInPage.sortBy('hilo');
+        await loggedInPage.sortBy(SORT_OPTIONS.PRICE_DESC);
         await expect(loggedInPage.itemNames).toHaveText(namesPriceDescending);
-        await expect(loggedInPage.sortDropdown).toHaveValue('hilo');
+        await expect(loggedInPage.sortDropdown).toHaveValue(SORT_OPTIONS.PRICE_DESC);
 
         const detailPage = await loggedInPage.openProductDetail(inventoryItems.first());
         await expect(detailPage.name).toHaveText(CATALOG_PRODUCTS.FLEECE_JACKET);
 
         const inventoryPage = await detailPage.backToProducts();
 
-        await expect(inventoryPage.sortDropdown).toHaveValue('az');
+        await expect(inventoryPage.sortDropdown).toHaveValue(SORT_OPTIONS.NAME_ASC);
         await expect(inventoryPage.itemNames).toHaveText(namesAscending);
       }
     );
@@ -220,10 +222,10 @@ test.describe(
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
 
-        await loggedInPage.sortBy('lohi');
+        await loggedInPage.sortBy(SORT_OPTIONS.PRICE_ASC);
         await expect(loggedInPage.itemNames).toHaveText(namesPriceAscending);
 
-        await loggedInPage.sortBy('az');
+        await loggedInPage.sortBy(SORT_OPTIONS.NAME_ASC);
         await expect(loggedInPage.itemNames).toHaveText(namesAscending);
       }
     );
@@ -241,9 +243,9 @@ test.describe(
       async ({ loggedInPage }) => {
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
-        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+        await expect(loggedInPage.sortDropdown).toHaveValue(SORT_OPTIONS.NAME_ASC);
 
-        await loggedInPage.sortBy('lohi');
+        await loggedInPage.sortBy(SORT_OPTIONS.PRICE_ASC);
 
         await expect(loggedInPage.itemNames).toHaveText(namesPriceAscending);
       }
@@ -262,9 +264,9 @@ test.describe(
       async ({ loggedInPage }) => {
         const inventoryItems = loggedInPage.inventoryItems;
         await expect(inventoryItems).toHaveCount(expectedProducts.length);
-        await expect(loggedInPage.sortDropdown).toHaveValue('az');
+        await expect(loggedInPage.sortDropdown).toHaveValue(SORT_OPTIONS.NAME_ASC);
 
-        await loggedInPage.sortBy('za');
+        await loggedInPage.sortBy(SORT_OPTIONS.NAME_DESC);
 
         await expect(loggedInPage.itemNames).toHaveText(namesDescending);
       }
@@ -282,29 +284,29 @@ test.describe(
       },
       async ({ loggedInPage }) => {
         const sortDropdown = loggedInPage.sortDropdown;
-        await expect(sortDropdown).toHaveValue('az');
-        await expect(sortDropdown.locator('option[value="az"]')).toHaveJSProperty('selected', true);
+        await expect(sortDropdown).toHaveValue(SORT_OPTIONS.NAME_ASC);
+        await expect(loggedInPage.sortOption(SORT_OPTIONS.NAME_ASC)).toHaveJSProperty('selected', true);
 
-        await loggedInPage.sortBy('za');
-        await expect(sortDropdown).toHaveValue('za');
-        await expect(sortDropdown.locator('option[value="za"]')).toHaveJSProperty('selected', true);
+        await loggedInPage.sortBy(SORT_OPTIONS.NAME_DESC);
+        await expect(sortDropdown).toHaveValue(SORT_OPTIONS.NAME_DESC);
+        await expect(loggedInPage.sortOption(SORT_OPTIONS.NAME_DESC)).toHaveJSProperty('selected', true);
 
-        await loggedInPage.sortBy('lohi');
-        await expect(sortDropdown).toHaveValue('lohi');
-        await expect(sortDropdown.locator('option[value="lohi"]')).toHaveJSProperty('selected', true);
+        await loggedInPage.sortBy(SORT_OPTIONS.PRICE_ASC);
+        await expect(sortDropdown).toHaveValue(SORT_OPTIONS.PRICE_ASC);
+        await expect(loggedInPage.sortOption(SORT_OPTIONS.PRICE_ASC)).toHaveJSProperty('selected', true);
 
-        await loggedInPage.sortBy('hilo');
-        await expect(sortDropdown).toHaveValue('hilo');
-        await expect(sortDropdown.locator('option[value="hilo"]')).toHaveJSProperty('selected', true);
+        await loggedInPage.sortBy(SORT_OPTIONS.PRICE_DESC);
+        await expect(sortDropdown).toHaveValue(SORT_OPTIONS.PRICE_DESC);
+        await expect(loggedInPage.sortOption(SORT_OPTIONS.PRICE_DESC)).toHaveJSProperty('selected', true);
       }
     );
 
     // ============================================================
-    // TC-CATALOG-012: Hamburger menu opens showing All Items, About,
-    // Logout, Reset App State links
+    // TC-CATALOG-012: Hamburger menu opens showing All Items, Dynamic
+    // Catalog, About, Logout, Reset App State links
     // ============================================================
     test(
-      '[TC-CATALOG-012] hamburger menu opens showing All Items, About, Logout, Reset App State links',
+      '[TC-CATALOG-012] hamburger menu opens showing All Items, Dynamic Catalog, About, Logout, Reset App State links',
       {
         annotation: [{ type: 'test-case', description: 'TC-CATALOG-012' }],
         tag: ['@positive'],
@@ -317,7 +319,7 @@ test.describe(
         await loggedInPage.sidebarMenu.open();
 
         await expect(loggedInPage.sidebarMenu.menuWrap).toBeVisible();
-        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(['All Items', 'About', 'Logout', 'Reset App State']);
+        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(EXPECTED_MENU_LINKS);
         await expect(loggedInPage.sidebarMenu.closeButton).toBeVisible();
       }
     );
@@ -338,7 +340,7 @@ test.describe(
 
         await loggedInPage.sidebarMenu.open();
         await expect(loggedInPage.sidebarMenu.menuWrap).toBeVisible();
-        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(['All Items', 'About', 'Logout', 'Reset App State']);
+        await expect(loggedInPage.sidebarMenu.menuLinks).toHaveText(EXPECTED_MENU_LINKS);
 
         await loggedInPage.sidebarMenu.close();
 

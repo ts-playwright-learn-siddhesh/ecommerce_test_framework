@@ -34,11 +34,18 @@ export class InventoryPage extends BasePage {
 
   async openProductDetail(item: Locator): Promise<ProductDetailPage> {
     await this.itemName(item).click();
-    return new ProductDetailPage(this.page);
+    await this.page.waitForURL(ProductDetailPage.url);
+    const detailPage = new ProductDetailPage(this.page);
+    await detailPage.backToProductsButton.waitFor({ state: 'visible' });
+    return detailPage;
   }
 
   async sortBy(option: SortOption): Promise<void> {
     await this.sortDropdown.selectOption(option);
+  }
+
+  sortOption(value: SortOption): Locator {
+    return this.sortDropdown.locator(`option[value="${value}"]`);
   }
 
   itemImage(item: Locator): Locator {

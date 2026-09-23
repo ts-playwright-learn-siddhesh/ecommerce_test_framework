@@ -1,4 +1,5 @@
 import { CATALOG_PRODUCTS } from './catalog.constants.ts';
+import type { SortOption } from '@/pages/InventoryPage.ts';
 
 export const expectedProducts = [
   { name: CATALOG_PRODUCTS.BACKPACK, price: '$29.99' },
@@ -10,6 +11,8 @@ export const expectedProducts = [
 ] as const;
 
 export const namesAscending = expectedProducts.map((p) => p.name);
+
+export const namesDescending = [...namesAscending].reverse();
 
 export const namesPriceAscending = [
   CATALOG_PRODUCTS.ONESIE,
@@ -28,3 +31,18 @@ export const namesPriceDescending = [
   CATALOG_PRODUCTS.BIKE_LIGHT,
   CATALOG_PRODUCTS.ONESIE,
 ];
+
+export const SORT_OPTIONS = {
+  NAME_ASC: 'az',
+  NAME_DESC: 'za',
+  PRICE_ASC: 'lohi',
+  PRICE_DESC: 'hilo',
+} as const satisfies Record<string, SortOption>;
+
+export const EXPECTED_MENU_LINKS = [
+  'All Items',
+  'Dynamic Catalog',
+  'About',
+  'Logout',
+  'Reset App State',
+] as const;

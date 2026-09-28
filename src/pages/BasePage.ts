@@ -2,7 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 import { SidebarMenu } from './SidebarMenu.ts';
 
 export abstract class BasePage {
-  protected readonly sidebarMenu: SidebarMenu;
+  readonly sidebarMenu: SidebarMenu;
 
   constructor(protected readonly page: Page) {
     this.sidebarMenu = new SidebarMenu(this.page);

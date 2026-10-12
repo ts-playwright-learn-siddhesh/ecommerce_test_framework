@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
-import { BasePage } from './BasePage.ts';
+import { BasePage, dataTest } from './BasePage.ts';
 import { CheckoutCompletePage } from './CheckoutCompletePage.ts';
 import { InventoryPage } from './InventoryPage.ts';
 
@@ -21,11 +21,11 @@ export class CheckoutOverviewPage extends BasePage {
   }
 
   itemName(item: Locator): Locator {
-    return item.locator('[data-test="inventory-item-name"]');
+    return item.locator(dataTest('inventory-item-name'));
   }
 
   itemPrice(item: Locator): Locator {
-    return item.locator('[data-test="inventory-item-price"]');
+    return item.locator(dataTest('inventory-item-price'));
   }
 
   async finish(): Promise<CheckoutCompletePage> {

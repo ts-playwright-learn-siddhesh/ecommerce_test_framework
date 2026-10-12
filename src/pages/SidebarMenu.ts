@@ -1,4 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
+import { dataTest } from './BasePage.ts';
 
 export class SidebarMenu {
   readonly menuButton: Locator;
@@ -12,7 +13,7 @@ export class SidebarMenu {
     this.closeButton = page.locator('#react-burger-cross-btn');
     this.menuWrap = page.locator('.bm-menu-wrap');
     this.menuLinks = page.locator('.bm-item-list a');
-    this.logoutLink = page.locator('[data-test="logout-sidebar-link"]');
+    this.logoutLink = page.locator(dataTest('logout-sidebar-link'));
   }
 
   async open(): Promise<void> {

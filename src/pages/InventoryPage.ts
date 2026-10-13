@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
-import { BasePage } from './BasePage.ts';
+import { BasePage, dataTest } from './BasePage.ts';
 import { CartPage } from './CartPage.ts';
 import { ProductDetailPage } from './ProductDetailPage.ts';
 
@@ -25,6 +25,11 @@ export class InventoryPage extends BasePage {
 
   async addBackpackToCart(): Promise<void> {
     await this.addBackpackToCartButton.click();
+  }
+
+  async addProductToCart(productName: string): Promise<void> {
+    const item = this.inventoryItems.filter({ hasText: productName });
+    await this.itemAddToCartButton(item).click();
   }
 
   async goToCart(): Promise<CartPage> {
@@ -53,15 +58,15 @@ export class InventoryPage extends BasePage {
   }
 
   itemName(item: Locator): Locator {
-    return item.locator('[data-test="inventory-item-name"]');
+    return item.locator(dataTest('inventory-item-name'));
   }
 
   itemDescription(item: Locator): Locator {
-    return item.locator('[data-test="inventory-item-desc"]');
+    return item.locator(dataTest('inventory-item-desc'));
   }
 
   itemPrice(item: Locator): Locator {
-    return item.locator('[data-test="inventory-item-price"]');
+    return item.locator(dataTest('inventory-item-price'));
   }
 
   itemAddToCartButton(item: Locator): Locator {
